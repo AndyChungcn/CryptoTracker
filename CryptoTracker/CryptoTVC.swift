@@ -9,7 +9,7 @@
 import UIKit
 import LocalAuthentication
 
-private let headerHeight : CGFloat = 100.0
+private let headerHeight : CGFloat = 120.0
 private let netWorthHeight : CGFloat = 45.0
 
 class CryptoTVC: UITableViewController, CoinDataDelegate {
@@ -18,6 +18,8 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        tableView.separatorStyle = .none
+        tableView.rowHeight = 55
         CoinData.shared.getPrices()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "打印", style: .plain, target: self, action: #selector(reportTapped))
@@ -77,13 +79,14 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: headerHeight))
         headerView.backgroundColor = UIColor.white
         let networthLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: netWorthHeight))
-        networthLabel.text = "My Crypto Net Worth"
+        networthLabel.text = "货币总值:"
         networthLabel.textAlignment = .center
+        networthLabel.font = UIFont.boldSystemFont(ofSize: 24)
         headerView.addSubview(networthLabel)
         
         amountLabel.frame = CGRect(x: 0, y: netWorthHeight, width: view.frame.size.width, height: headerHeight - netWorthHeight)
         amountLabel.textAlignment = .center
-        amountLabel.font = UIFont.boldSystemFont(ofSize: 60.0)
+        amountLabel.font = UIFont.boldSystemFont(ofSize: 50.0)
         headerView.addSubview(amountLabel)
         
         displayNetWorth()
@@ -112,8 +115,8 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         
-        let coin = CoinData.shared.coins[indexPath.row]        
-        cell.textLabel?.text = "\(coin.symbol) - \(coin.priceAsString())"
+        let coin = CoinData.shared.coins[indexPath.row]
+        cell.textLabel?.text = "\(coin.symbol) - 单价:\(coin.priceAsString()) - 个数:\(coin.amount)"
         cell.imageView?.image = coin.image
         return cell
     }

@@ -38,20 +38,20 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
         chart.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: chartHeight)
         view.addSubview(chart)
         
-        let imageView = UIImageView(frame: CGRect(x: view.frame.size.width / 2 - imageSize / 2, y: chartHeight + 20, width: imageSize, height: imageSize))
+        let imageView = UIImageView(frame: CGRect(x: view.frame.size.width / 2 - imageSize / 2, y: chartHeight + 50, width: imageSize, height: imageSize))
         imageView.image = coin?.image
         view.addSubview(imageView)
         
-        priceLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + 20, width: view.frame.size.width, height: priceLabelHeight)
+        priceLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + 50, width: view.frame.size.width, height: priceLabelHeight)
         priceLabel.textAlignment = .center
         view.addSubview(priceLabel)
         
-        youOwnLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 2, width: view.frame.size.width, height: priceLabelHeight)
+        youOwnLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 2 + 30, width: view.frame.size.width, height: priceLabelHeight)
         youOwnLabel.textAlignment = .center
         youOwnLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         view.addSubview(youOwnLabel)
         
-        worthLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 3, width: view.frame.size.width, height: priceLabelHeight)
+        worthLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 3 + 30, width: view.frame.size.width, height: priceLabelHeight)
         worthLabel.textAlignment = .center
         worthLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         view.addSubview(worthLabel)
