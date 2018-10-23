@@ -53,6 +53,15 @@ class CoinData {
         
     }
     
+    func netWorthAsString() -> String {
+        var netWorth = 0.0
+        for coin in coins {
+            netWorth += coin.price * coin.amount
+        }
+        
+        return doubleToMoneyString(double: netWorth)
+    }
+    
     func doubleToMoneyString(double: Double) -> String {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "en_US")
@@ -84,6 +93,12 @@ class Coin {
         if let image = UIImage(named: symbol) {
             self.image = image
         }
+        
+        self.price = UserDefaults.standard.double(forKey: symbol)
+        self.amount = UserDefaults.standard.double(forKey: symbol + "amount")
+        if let history = UserDefaults.standard.array(forKey: symbol + "history") as? [Double] {
+            self.historicalData = history
+        }
     }
     
     func getHistoricalData() {
@@ -97,6 +112,7 @@ class Coin {
                         }
                     }
                     CoinData.shared.delegate?.newHistory?()
+                    UserDefaults.standard.set(self.historicalData, forKey: self.symbol + "history")
                 }
             }
         }

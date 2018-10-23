@@ -56,8 +56,8 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
         worthLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         view.addSubview(worthLabel)
         
-        newPrices()
         coin?.getHistoricalData()
+        newPrices()
     }
     
     @objc func editTapped() {
@@ -76,6 +76,7 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
                 if let text = alert.textFields?[0].text {
                     if let amount = Double(text) {
                         self.coin?.amount = amount
+                        UserDefaults.standard.set(amount, forKey: coin.symbol + "amount")
                         self.newPrices()
                     }
                 }
@@ -96,7 +97,7 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
     func newPrices() {
         if let coin = coin {
             priceLabel.text = coin.priceAsString()
-            worthLabel.text = "总价值：coin.amountAsString()"
+            worthLabel.text = "总价值：\(coin.amountAsString())"
             youOwnLabel.text = "你有\(coin.amount)个\(coin.symbol)"
         }
     }

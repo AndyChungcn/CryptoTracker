@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,9 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        let cryptoTVC = CryptoTVC()
-        let navController = UINavigationController(rootViewController: cryptoTVC)
-        window?.rootViewController = navController
+        if LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) && UserDefaults.standard.bool(forKey: "secure") {
+            let authVC = AuthVC()
+            window?.rootViewController = authVC
+        } else {
+            let cryptoTVC = CryptoTVC()
+            let navController = UINavigationController(rootViewController: cryptoTVC)
+            window?.rootViewController = navController
+        }
         
         return true
     }
