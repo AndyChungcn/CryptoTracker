@@ -36,6 +36,7 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
         displayNetWorth()
     }
     
+    // 打印PDF
     @objc func reportTapped() {
         let formatter = UIMarkupTextPrintFormatter(markupText: CoinData.shared.html())
         let render = UIPrintPageRenderer()
@@ -54,6 +55,7 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
         present(shareVC, animated: true, completion: nil)
     }
     
+    // 加锁或解锁
     func updateSecurebutton() {
         if UserDefaults.standard.bool(forKey: "secure") {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "解锁", style: .plain, target: self, action: #selector(secureTapped))
@@ -87,7 +89,7 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
         
         amountLabel.frame = CGRect(x: 0, y: netWorthHeight, width: view.frame.size.width, height: headerHeight - netWorthHeight)
         amountLabel.textAlignment = .center
-        amountLabel.font = UIFont.boldSystemFont(ofSize: 50.0)
+        amountLabel.font = UIFont.boldSystemFont(ofSize: 36.0)
         headerView.addSubview(amountLabel)
         
         displayNetWorth()

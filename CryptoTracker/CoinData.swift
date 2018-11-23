@@ -101,6 +101,11 @@ class Coin {
     var price = 0.0
     var amount = 0.0
     var historicalData = [Double]()
+    var dailyLimit: Double = 30 {
+        didSet {
+            getHistoricalData()
+        }
+    }
     
     init(symbol: String) {
         self.symbol = symbol
@@ -116,7 +121,7 @@ class Coin {
     }
     
     func getHistoricalData() {
-        Alamofire.request("https://min-api.cryptocompare.com/data/histoday?fsym=\(symbol)&tsym=USD&limit=30").responseJSON { (response) in
+        Alamofire.request("https://min-api.cryptocompare.com/data/histoday?fsym=\(symbol)&tsym=USD&limit=\(dailyLimit)").responseJSON { (response) in
             if let json = response.result.value as? [String: Any] {
                 if let pricesJSON = json["Data"] as? [[String: Double]] {
                     self.historicalData = []
@@ -125,8 +130,8 @@ class Coin {
                             self.historicalData.append(closePrice)
                         }
                     }
-                    CoinData.shared.delegate?.newHistory?()
                     UserDefaults.standard.set(self.historicalData, forKey: self.symbol + "history")
+                    CoinData.shared.delegate?.newHistory?()                    
                 }
             }
         }

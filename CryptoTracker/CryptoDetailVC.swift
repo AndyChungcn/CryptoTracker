@@ -20,6 +20,9 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
     var priceLabel = UILabel()
     var youOwnLabel = UILabel()
     var worthLabel = UILabel()
+    var thirtydaysXCoordinate: [Double]  = [0, 5, 10, 15, 20, 25, 30]
+    var sixtydaysXCoordinate:[Double]    = [0, 10, 20, 30, 40, 50, 60]
+    var ninetydaysXCoordinate:[Double]   = [0, 15, 30, 45, 60, 75, 90]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,31 +36,70 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
         
         
         chart.yLabelsFormatter = { CoinData.shared.doubleToMoneyString(double: $1) }
-        chart.xLabels = [0, 5, 10, 15, 20, 25, 30]
-        chart.xLabelsFormatter = { String(Int(round(30 - $1))) + "d" }
+        chart.xLabels = thirtydaysXCoordinate
+        
+        chart.xLabelsFormatter = { String(Int(round((self.chart.xLabels?.last)! - $1))) + "d" }
         chart.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: chartHeight)
         view.addSubview(chart)
         
-        let imageView = UIImageView(frame: CGRect(x: view.frame.size.width / 2 - imageSize / 2, y: chartHeight + 50, width: imageSize, height: imageSize))
+        // Initialize
+        let items = ["30天", "60天", "90天"]
+        let historicalDailySC = UISegmentedControl(items: items)
+        historicalDailySC.selectedSegmentIndex = 0
+        // Set up Frame and SegmentedControl
+        historicalDailySC.frame = CGRect(x: view.frame.width / 2 - 80, y: chartHeight + 15, width: 160, height: 30.0)
+        // Style the Segmented Control
+        historicalDailySC.layer.cornerRadius = 7.0  // Don't let background bleed
+        historicalDailySC.backgroundColor = UIColor.blue
+        historicalDailySC.tintColor = UIColor.white
+        // Add target action method
+        historicalDailySC.addTarget(self, action: #selector(dailyLimitChanged), for: .valueChanged)
+        view.addSubview(historicalDailySC)
+        
+        let imageView = UIImageView(frame: CGRect(x: view.frame.size.width / 2 - imageSize / 2, y: chartHeight + 70, width: imageSize, height: imageSize))
         imageView.image = coin?.image
         view.addSubview(imageView)
         
-        priceLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + 50, width: view.frame.size.width, height: priceLabelHeight)
+        priceLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + 70, width: view.frame.size.width, height: priceLabelHeight)
+        priceLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         priceLabel.textAlignment = .center
         view.addSubview(priceLabel)
         
-        youOwnLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 2 + 30, width: view.frame.size.width, height: priceLabelHeight)
+        youOwnLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 2 + 50, width: view.frame.size.width, height: priceLabelHeight)
         youOwnLabel.textAlignment = .center
         youOwnLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         view.addSubview(youOwnLabel)
         
-        worthLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 3 + 30, width: view.frame.size.width, height: priceLabelHeight)
+        worthLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 3 + 50, width: view.frame.size.width, height: priceLabelHeight)
         worthLabel.textAlignment = .center
         worthLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         view.addSubview(worthLabel)
         
         coin?.getHistoricalData()
         newPrices()
+    }
+    
+    @objc func dailyLimitChanged(sender: UISegmentedControl) {
+        chart.removeAllSeries()
+        switch sender.selectedSegmentIndex {
+        case 0:
+            coin?.dailyLimit = 30
+        case 1:
+            coin?.dailyLimit = 60
+        case 2:
+            coin?.dailyLimit = 90
+        default:
+            print("error")
+        }
+        
+        switch coin?.dailyLimit {
+        case 30:
+            chart.xLabels = thirtydaysXCoordinate
+        case 60:
+            chart.xLabels = sixtydaysXCoordinate
+        default:
+            chart.xLabels = ninetydaysXCoordinate
+        }
     }
     
     @objc func editTapped() {
@@ -83,13 +125,14 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
             }))
             self.present(alert, animated: true, completion: nil)
         }
-        
+    
     }
     
     func newHistory() {
         if let coin = coin {
-            let series = ChartSeries(coin.historicalData)
+            let series = ChartSeries(coin.historicalData)            
             series.area = true
+            series.color = UIColor.blue
             chart.add(series)
         }
     }
