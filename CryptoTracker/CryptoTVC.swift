@@ -19,10 +19,11 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        tableView.separatorStyle = .none
-        tableView.rowHeight = 55
+        tableView.rowHeight = 60
         CoinData.shared.getPrices()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "打印", style: .plain, target: self, action: #selector(reportTapped))
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .plain, target: nil, action: nil)
         
         if LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             updateSecurebutton()
@@ -81,7 +82,7 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
         let networthLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: netWorthHeight))
         networthLabel.text = "货币总值:"
         networthLabel.textAlignment = .center
-        networthLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        networthLabel.font = UIFont.boldSystemFont(ofSize: 22)
         headerView.addSubview(networthLabel)
         
         amountLabel.frame = CGRect(x: 0, y: netWorthHeight, width: view.frame.size.width, height: headerHeight - netWorthHeight)
@@ -93,6 +94,8 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
         
         return headerView
     }
+    
+    
     
     func displayNetWorth() {
         amountLabel.text = CoinData.shared.netWorthAsString()
@@ -116,7 +119,7 @@ class CryptoTVC: UITableViewController, CoinDataDelegate {
         let cell = UITableViewCell()
         
         let coin = CoinData.shared.coins[indexPath.row]
-        cell.textLabel?.text = "\(coin.symbol) - 单价:\(coin.priceAsString()) - 个数:\(coin.amount)"
+        cell.textLabel?.attributedText = NSAttributedString(string: "\(coin.symbol) - 单价:\(coin.priceAsString()) - 个数:\(coin.amount)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17) ])
         cell.imageView?.image = coin.image
         return cell
     }

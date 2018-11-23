@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = authVC
         } else {
             let cryptoTVC = CryptoTVC()
-            let navController = UINavigationController(rootViewController: cryptoTVC)
+            let navController = UINavigationController(rootViewController: cryptoTVC)            
             window?.rootViewController = navController
         }
         

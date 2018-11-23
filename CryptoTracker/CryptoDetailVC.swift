@@ -10,8 +10,8 @@ import UIKit
 import SwiftChart
 
 private let chartHeight : CGFloat = 300.0
-private let imageSize : CGFloat = 100.0
-private let priceLabelHeight : CGFloat = 25.0
+private let imageSize : CGFloat = 80.0
+private let priceLabelHeight : CGFloat = 30.0
 
 class CryptoDetailVC: UIViewController, CoinDataDelegate {
 
@@ -48,12 +48,12 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
         
         youOwnLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 2 + 30, width: view.frame.size.width, height: priceLabelHeight)
         youOwnLabel.textAlignment = .center
-        youOwnLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        youOwnLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         view.addSubview(youOwnLabel)
         
         worthLabel.frame = CGRect(x: 0, y: chartHeight + imageSize + priceLabelHeight * 3 + 30, width: view.frame.size.width, height: priceLabelHeight)
         worthLabel.textAlignment = .center
-        worthLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        worthLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         view.addSubview(worthLabel)
         
         coin?.getHistoricalData()
@@ -98,7 +98,7 @@ class CryptoDetailVC: UIViewController, CoinDataDelegate {
         if let coin = coin {
             priceLabel.text = coin.priceAsString()
             worthLabel.text = "总价值：\(coin.amountAsString())"
-            youOwnLabel.text = "你有\(coin.amount)个\(coin.symbol)"
+            youOwnLabel.text = "我有\(coin.amount)个\(coin.symbol)"
         }
     }
 }

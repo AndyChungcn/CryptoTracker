@@ -15,8 +15,6 @@ class CoinData {
     weak var delegate: CoinDataDelegate?
     
     private init() {
-        // 1.Bitcoin (BTC) 2.Ethereum (Ether) 3.Ripple (XRP) 4.Bitcoin Cash (BCH)
-        // 5.EOS  6.Cardano(ADA)  7.Stellar (XLM)  8.Litecoin (LTC)  9.IOTA  10.NEO
         let symbols = ["BTC", "ETH", "LTC", "XRP", "BCH", "EOS", "ADA", "XLM", "NEO", "IOTX"]
         
         for symbol in symbols {
@@ -56,12 +54,12 @@ class CoinData {
     }
     
     func html() -> String {
-        var html = "<h1>My Crypto Report</h1>"
-        html += "<h2>Net Worth: \(netWorthAsString())</h2>"
+        var html = "<h1>虚拟货币财务报表</h1>"
+        html += "<h2>总价值: \(netWorthAsString())</h2>"
         html += "<ul>"
         for coin in coins {
             if coin.amount != 0.0 {
-                html += "<li>\(coin.symbol) - I own: \(coin.amount) - Valued at: \(doubleToMoneyString(double: coin.amount * coin.price))</li>"
+                html += "<li>\(coin.symbol) - 我有: \(coin.amount) - 价值: \(doubleToMoneyString(double: coin.amount * coin.price))</li>"
             }
         }
         html += "</ul>"
